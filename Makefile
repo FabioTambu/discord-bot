@@ -1,7 +1,11 @@
-.PHONY: all
+.PHONY: stop start
 
-all:
-	pkill -f "node src/index.js" || true
+all: stop start
+
+stop:
+	-pkill -f "node src/index.js"
+
+start:
 	git fetch
 	git merge
-	node src/index.js
+	nohup node src/index.js >/dev/null 2>&1 &
