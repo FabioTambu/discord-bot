@@ -27,11 +27,16 @@ module.exports = {
             }
 
             // API calls
-            const playerResponse = await axios.get(`https://bsproxy.royaleapi.dev/v1/players/%23${tag}`, {
-                headers: {
-                    'Authorization': process.env.brawlAPIAuthorization,
-                }
-            });
+            let playerResponse;
+            try {
+                playerResponse = await axios.get(`https://bsproxy.royaleapi.dev/v1/players/%23${tag}`, {
+                    headers: {
+                        'Authorization': process.env.brawlAPIAuthorization,
+                    }
+                })
+            } catch (err) {
+                if (err.response.status == 404) return interaction.reply({ embeds: [createErrorMessage('**This brawl stars tag does not exist!**')], ephemeral: true})
+            }
             const brawlersResponse = await axios.get('https://bsproxy.royaleapi.dev/v1/brawlers', {
                 headers: {
                     'Authorization': process.env.brawlAPIAuthorization,
@@ -143,6 +148,7 @@ module.exports = {
             await interaction.reply({ files: [{ attachment: canvas.toBuffer(), name: `${tag}-profile.png` }] });
             
         } catch (err) {
+            console.log(err)
             await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true});
         }
     }
