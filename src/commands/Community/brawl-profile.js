@@ -35,7 +35,7 @@ module.exports = {
                     }
                 })
             } catch (err) {
-                if (err.response.status == 404) return interaction.reply({ embeds: [createErrorMessage('**This brawl stars tag does not exist!**')], ephemeral: true})
+                if (err.response.status == 404) return interaction.reply({ embeds: [createErrorMessage('**This is a test!**')], ephemeral: true})
             }
             const brawlersResponse = await axios.get('https://bsproxy.royaleapi.dev/v1/brawlers', {
                 headers: {
