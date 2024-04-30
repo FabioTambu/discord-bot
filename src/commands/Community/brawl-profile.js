@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder } = require('discord.js');
 const { errors, createErrorMessage } = require('../../global');
 const axios = require('axios');
 const { createCanvas, loadImage } = require('canvas');
@@ -18,9 +17,8 @@ module.exports = {
             // Initialization of variables
             const user = interaction.options.getUser('user');
             let tag = interaction.options.getString('tag');
-            const font = 'bold 35px Sans';
             const imageBorder = 10;
-
+            
             // Error handling
             if (!user && !tag) return await interaction.reply({ embeds: [createErrorMessage('**You must enter at least one option!**')], ephemeral: true})
             if (user && !tag){
@@ -29,12 +27,12 @@ module.exports = {
             }
 
             // API calls
-            const playerResponse = await axios.get(`https://api.brawlstars.com/v1/players/%23${tag}`, {
+            const playerResponse = await axios.get(`https://bsproxy.royaleapi.dev/v1/players/%23${tag}`, {
                 headers: {
                     'Authorization': process.env.brawlAPIAuthorization,
                 }
             });
-            const brawlersResponse = await axios.get('https://api.brawlstars.com/v1/brawlers', {
+            const brawlersResponse = await axios.get('https://bsproxy.royaleapi.dev/v1/brawlers', {
                 headers: {
                     'Authorization': process.env.brawlAPIAuthorization,
                 }
@@ -50,11 +48,13 @@ module.exports = {
             }
             allBrawlers.sort((a, b) => b.rank - a.rank);
 
-            // Create Image
+            // Create Image & Font
             const totalWidth = 1920;
             const totalHeight = 1080;
             const canvas = createCanvas(totalWidth + imageBorder * 2, totalHeight);
             const ctx = canvas.getContext('2d');
+            ctx.font = 'bold 35px Sans';
+            ctx.fillStyle = 'white';
             // Background
             const background = await loadImage('assets/background.jpg');
             ctx.drawImage(background, 0, 0, totalWidth + imageBorder * 2, totalHeight);
@@ -62,8 +62,6 @@ module.exports = {
             const black_square = await loadImage('assets/black-square.png');
             ctx.drawImage(black_square, 30 + imageBorder, 25, 150, 150);
             // Player Name
-            ctx.font = font;
-            ctx.fillStyle = 'white';
             const playerNameX = 400 - ctx.measureText(playerData.name).width / 2 + imageBorder;
             ctx.fillText(playerData.name, playerNameX, 75);
 
