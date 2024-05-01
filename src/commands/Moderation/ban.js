@@ -32,8 +32,6 @@ module.exports = {
         const deleteMessages = interaction.options.getInteger('delete-messages');
         const reason = interaction.options.getString('reason') || 'No reason provided';
 
-        const successMessage = new EmbedBuilder().setColor("Green").setDescription(`**${user.user.globalName}** has been **banned\nReason**: ${reason}`);
-
         if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) return await interaction.reply({ embeds: [errors.permission], ephemeral: true});
         if (user.id == interaction.member.id) return await interaction.reply({ embeds: [errors.sameID], ephemeral: true});
 
