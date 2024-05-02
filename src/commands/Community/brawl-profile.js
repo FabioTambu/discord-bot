@@ -18,6 +18,8 @@ module.exports = {
             const user = interaction.options.getUser('user');
             let tag = interaction.options.getString('tag');
             const imageBorder = 10;
+
+            await interaction.deferReply()
             
             // Error handling
             if (!user && !tag) return await interaction.reply({ embeds: [createErrorMessage('**You must enter at least one option!**')], ephemeral: true})
@@ -144,8 +146,7 @@ module.exports = {
                 }
 
             }
-            
-            await interaction.reply({ files: [{ attachment: canvas.toBuffer(), name: `${tag}-profile.png` }] });
+            await interaction.editReply({ files: [{ attachment: canvas.toBuffer(), name: `${tag}-profile.png` }] });
             
         } catch (err) {
             console.log(err)
