@@ -22,10 +22,10 @@ module.exports = {
             await interaction.deferReply()
             
             // Error handling
-            if (!user && !tag) return await interaction.reply({ embeds: [createErrorMessage('**You must enter at least one option!**')], ephemeral: true})
+            if (!user && !tag) return await interaction.editReply({ embeds: [createErrorMessage('**You must enter at least one option!**')], ephemeral: true})
             if (user && !tag){
-                tag = checkTag(user.id)
-                if (!tag) return await interaction.reply({ embeds: [errors.userNotRegistered], ephemeral: true})
+                tag = await checkTag(user.id);
+                if (!tag) return await interaction.editReply({ embeds: [errors.userNotRegistered], ephemeral: true });
             }
 
             // API calls
@@ -37,7 +37,7 @@ module.exports = {
                     }
                 })
             } catch (err) {
-                if (err.response.status == 404) return interaction.reply({ embeds: [createErrorMessage('**This brawl stars tag does not exist!**')], ephemeral: true})
+                if (err.response.status == 404) return interaction.editReply({ embeds: [createErrorMessage('**This brawl stars tag does not exist!**')], ephemeral: true})
             }
             const brawlersResponse = await axios.get('https://bsproxy.royaleapi.dev/v1/brawlers', {
                 headers: {
@@ -150,7 +150,7 @@ module.exports = {
             
         } catch (err) {
             console.log(err)
-            await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true});
+            await interaction.editReply({ embeds: [errors.somethingWrong], ephemeral: true});
         }
     }
 };

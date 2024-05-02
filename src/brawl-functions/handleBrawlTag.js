@@ -1,28 +1,22 @@
-const fs = require('fs');
+const { getDatabase, ref, get, child, update } = require("firebase/database");
+const db = getDatabase();
 
-function fetchBrawlTags() {
+async function checkTag(userID) {
   try {
-    const data = fs.readFileSync('./JSON/tag.json', 'utf8');
-    return JSON.parse(data);
-  } catch (err) {
-    console.error('Errore nella lettura del file:', err);
-    return {};
+    const snapshot = await get(child(ref(db), 'brawlTag'));
+    const fetchData = snapshot.val();
+    return fetchData[userID];
+  } catch (error) {
+    console.error(error);
+    return;
   }
 }
 
-function checkTag(inputString) {
-  const mappings = fetchBrawlTags();
-  return mappings[inputString] || null;
-}
-
-function writeTag(chiave, valore) {
-  try {
-    const mappings = fetchBrawlTags();
-    mappings[chiave] = valore;
-    fs.writeFileSync('./JSON/tag.json', JSON.stringify(mappings, null, 2));
-  } catch (err) {
-    console.error('Errore nell\'aggiunta della corrispondenza:', err);
-  }
+function writeTag(key, vaalue) {
+    update(ref(db, 'brawlTag'), {[key]: vaalue})
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 module.exports = { checkTag, writeTag };
