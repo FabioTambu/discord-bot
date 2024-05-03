@@ -13,12 +13,15 @@ module.exports = {
         const amount = interaction.options.getInteger('amount');
 
         if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) return await interaction.reply({ embeds: [errors.permission], ephemeral: true});
+        
+        const messages = await interaction.channel.messages.fetch({ limit: amount });
+        const oldMessages = messages.filter(msg => Date.now() - msg.createdTimestamp > 1209600000); // 14 days in milliseconds
 
         try {
-            await interaction.channel.bulkDelete(amount)
+            await interaction.channel.bulkDelete(oldMessages);
             await interaction.reply({embeds: [createSuccessMessage('**Messages deleted!**')]});
         } catch (err) {
-            return await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true})
+            return await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true});
         }
     }
 }
