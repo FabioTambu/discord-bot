@@ -8,10 +8,15 @@ function createSuccessMessage(message) {
     return new EmbedBuilder().setColor("Green").setDescription(message)
 }
 
+function createCustomMessage(message, color) {
+    return new EmbedBuilder().setColor(color).setDescription(message)
+}
+
 
 module.exports = {
     createErrorMessage,
     createSuccessMessage,
+    createCustomMessage,
 
     errors: {
         permission: createErrorMessage('**You don\'t have permission!**'),

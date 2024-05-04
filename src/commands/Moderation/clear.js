@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { PermissionFlagsBits } = require('discord.js');
-const { errors, createSuccessMessage } = require('../../global');
+const { errors, createSuccessMessage, createCustomMessage } = require('../../global');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,10 +15,11 @@ module.exports = {
         if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)) return await interaction.reply({ embeds: [errors.permission], ephemeral: true});
         
         const messages = await interaction.channel.messages.fetch({ limit: amount });
-        const oldMessages = messages.filter(msg => Date.now() - msg.createdTimestamp > 1209600000); // 14 days in milliseconds
+        const newMessages = messages.filter(msg => Date.now() - msg.createdTimestamp < 1209600000);
 
         try {
-            await interaction.channel.bulkDelete(oldMessages);
+            await interaction.channel.bulkDelete(newMessages);
+            if(newMessages.size != amount) return await interaction.reply({embeds: [createCustomMessage('**Only some messages have been deleted!**\n(those older than 14 days cannot be deleted)', 'Orange')]});
             await interaction.reply({embeds: [createSuccessMessage('**Messages deleted!**')]});
         } catch (err) {
             return await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true});
