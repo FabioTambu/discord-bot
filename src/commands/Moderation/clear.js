@@ -19,7 +19,7 @@ module.exports = {
 
         try {
             await interaction.channel.bulkDelete(newMessages);
-            if(newMessages.size != amount) return await interaction.reply({embeds: [createCustomMessage('**Only some messages have been deleted!**\n(those older than 14 days cannot be deleted)', 'Orange')]});
+            if(newMessages.size < messages.size) return await interaction.reply({embeds: [createCustomMessage('**Only some messages have been deleted!**\n(those older than 14 days cannot be deleted)', 'Orange')]});
             await interaction.reply({embeds: [createSuccessMessage('**Messages deleted!**')]});
         } catch (err) {
             return await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true});
