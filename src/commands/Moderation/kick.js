@@ -9,17 +9,19 @@ module.exports = {
     .addUserOption(option => option.setName('user').setDescription('Mention the user you want to kick').setRequired(true))
     .addStringOption(option => option.setName('reason').setDescription('Enter the reason for the kick')),
 
-    async execute (interaction, client) {
-        const user = interaction.options.getMember('user');
-        const reason = interaction.options.getString('reason') || 'No reason provided';
+    async execute (interaction) {
+        const { options, member } = interaction;
+        const user = options.getMember('user');
+        const reason = options.getString('reason') || 'No reason provided';
 
-        if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) return await interaction.reply({ embeds: [errors.permission], ephemeral: true});
-        if (user.id == interaction.member.id) return await interaction.reply({ embeds: [errors.sameID], ephemeral: true});
+        if (!member.permissions.has(PermissionFlagsBits.KickMembers)) return await interaction.reply({ embeds: [errors.permission], ephemeral: true});
+        if (user.id == member.id) return await interaction.reply({ embeds: [errors.sameID], ephemeral: true});
 
         try {
             user.kick(reason);
             await interaction.reply({embeds: [createSuccessMessage(`**${user.user.globalName}** has been kicked!`)]});
         } catch (err) {
+            console.log(err);
             return await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true})
         }
     }

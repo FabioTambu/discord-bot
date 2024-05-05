@@ -4,7 +4,9 @@
     "canvas": "^2.11.2",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
-    "firebase": "^10.11.1"
+    "firebase": "^10.11.1",
+    "mongodb": "^6.6.0",
+    "mongoose": "^8.3.3"
   },
   "name": "king_bot",
   "version": "1.0.0",

@@ -1,8 +1,20 @@
+const mongoose = require('mongoose');
+const mongodbURL = process.env.MONGODBURL;
+
 module.exports = {
     name: 'ready',
     once: true,
     async execute(client) {
         console.log('Ready!');
+
+        if (!mongodbURL) return;
+
+        await mongoose.connect(mongodbURL || '');
+        
+
+        if (mongoose.connect) {
+            console.log('The Server is Running');
+        }
 
         async function pickPresence () {
             const option = Math.floor(Math.random() * statusArray.length);
