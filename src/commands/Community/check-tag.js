@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { checkTag } = require('../../brawl-functions/handleBrawlTag');
+const { checkTag } = require('../../API-Calls/handleBrawlTag');
 const { errors, createSuccessMessage } = require('../../global');
 
 
@@ -9,8 +9,9 @@ module.exports = {
     .setDescription('Check a user\'s brawl stars tag')
     .addUserOption(option => option.setName('user').setDescription('Mention the user whose brawl stars tag you want to see').setRequired(true)),
 
-    async execute (interaction, client) {
-        const user = interaction.options.getUser('user');
+    async execute (interaction) {
+        const { options } = interaction;
+        const user = options.getUser('user');
 
         try {
             const tag = checkTag(user.id);
@@ -20,6 +21,7 @@ module.exports = {
                 await interaction.reply({embeds: [errors.userNotRegistered], ephemeral: true});
             
         } catch (err) {
+            console.log(err);
             return await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true})
         }
     }

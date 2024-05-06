@@ -1,6 +1,5 @@
 const { Client, GatewayIntentBits, Collection, Events } = require(`discord.js`);
 const fs = require('fs');
-const { initializeApp } = require("firebase/app");
 const { errors } = require('./global');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] }); 
 client.commands = new Collection();
@@ -10,18 +9,6 @@ require('dotenv').config();
 const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith(".js"));
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js"));
 const commandFolders = fs.readdirSync("./src/commands");
-
-const firebaseConfig = {
-  apiKey: process.env.firebase_api_key,
-  authDomain: process.env.firebase_auth_domain,
-  databaseURL: process.env.firebase_database_url,
-  projectId: process.env.firebase_project_id,
-  storageBucket: process.env.firebase_storage_bucket,
-  messagingSenderId: process.env.firebase_messaging_sender_id,
-  appId: process.env.firebase_app_id
-};
-
-const app = initializeApp(firebaseConfig);
 
 (async () => {
     for (file of functions) {
@@ -35,6 +22,7 @@ const app = initializeApp(firebaseConfig);
 const reactions = require('./Schemas.js/reaction-role');
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
+
   if (!reaction.message.guildId) return;
   if (user.bot) return;
 

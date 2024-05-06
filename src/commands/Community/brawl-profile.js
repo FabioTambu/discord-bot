@@ -2,7 +2,8 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { errors, createErrorMessage } = require('../../global');
 const axios = require('axios');
 const { createCanvas, loadImage } = require('canvas');
-const { checkTag } = require('../../brawl-functions/handleBrawlTag');
+const { checkTag } = require('../../API-Calls/handleBrawlTag');
+const { findBrawlProfile, fetchAllBrawlers } = require('../../API-Calls/checkBrawlProfile')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,11 +13,12 @@ module.exports = {
         .addStringOption(option => option.setName('tag').setDescription('Enter the brawl stars tag whose profile you want to see')),
 
     async execute(interaction) {
+        const { options } = interaction;
 
         try {
             // Initialization of variables
-            const user = interaction.options.getUser('user');
-            let tag = interaction.options.getString('tag');
+            const user = options.getUser('user');
+            let tag = options.getString('tag');
             const imageBorder = 10;
 
             await interaction.deferReply()
@@ -26,24 +28,17 @@ module.exports = {
             if (user && !tag){
                 tag = await checkTag(user.id);
                 if (!tag) return await interaction.editReply({ embeds: [errors.userNotRegistered], ephemeral: true });
+                if (tag == 'err') return await interaction.editReply({ embeds: [errors.somethingWrong], ephemeral: true });
             }
 
             // API calls
-            let playerResponse;
-            try {
-                playerResponse = await axios.get(`https://bsproxy.royaleapi.dev/v1/players/%23${tag}`, {
-                    headers: {
-                        'Authorization': process.env.brawlAPIAuthorization,
-                    }
-                })
-            } catch (err) {
-                if (err.response.status == 404) return interaction.editReply({ embeds: [createErrorMessage('**This brawl stars tag does not exist!**')], ephemeral: true})
-            }
-            const brawlersResponse = await axios.get('https://bsproxy.royaleapi.dev/v1/brawlers', {
-                headers: {
-                    'Authorization': process.env.brawlAPIAuthorization,
-                }
-            });
+            const playerResponse = await findBrawlProfile(tag);
+            if (playerResponse == '404 err') return interaction.editReply({ embeds: [createErrorMessage('**This brawl stars tag does not exist!**')], ephemeral: true});
+            if (playerResponse == 'err') return interaction.editReply({ embeds: [errors.somethingWrong], ephemeral: true });
+
+            const brawlersResponse = await fetchAllBrawlers();
+            if(brawlersResponse == 'err') return interaction.editReply({ embeds: [errors.somethingWrong], ephemeral: true });
+            
             const playerData = playerResponse.data;
 
             // Save the brawlers
@@ -149,7 +144,7 @@ module.exports = {
             await interaction.editReply({ files: [{ attachment: canvas.toBuffer(), name: `${tag}-profile.png` }] });
             
         } catch (err) {
-            console.log(err)
+            console.log(err);
             await interaction.editReply({ embeds: [errors.somethingWrong], ephemeral: true});
         }
     }
