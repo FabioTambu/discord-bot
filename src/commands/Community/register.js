@@ -15,11 +15,12 @@ module.exports = {
         const tag = options.getString('tag');
 
         const tagExist = await findBrawlProfile(tag);
-            if (tagExist == '404 err') return interaction.reply({ embeds: [errors.brawlTagNotExist], ephemeral: true });
+        if (tagExist == '404 err') return interaction.reply({ embeds: [errors.brawlTagNotExist], ephemeral: true });
             
-            const tagInDatabase = await checkTag(user.id);
-            if(tagInDatabase == tag.toUpperCase()) return interaction.reply({ embeds: [createCustomMessage('**You are already registered with this tag!**', 'Orange')], ephemeral: true });
- 
+        const tagInDatabase = await checkTag(user.id);
+        if (tagInDatabase == tag.toUpperCase()) return interaction.reply({ embeds: [createCustomMessage('**You are already registered with this tag!**', 'Orange')], ephemeral: true });
+        if (tagInDatabase == 'err') return interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true });
+
         try {
             writeTag(user.id, tag)
             await interaction.reply({embeds: [createSuccessMessage('**Tag Updated!**')]});
