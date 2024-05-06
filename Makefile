@@ -8,4 +8,4 @@ stop:
 start:
 	git fetch
 	git merge
-	nohup sh -c 'echo "Error log started at: $$(date)" >> errors.txt && node src/index.js >> errors.txt 2>&1 &' >/dev/null 2>&1 &
+	nohup sh -c 'node src/index.js' >> errors.txt 2>&1 & >/dev/null 2>&1 &
