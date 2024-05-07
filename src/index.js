@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits, Collection, Events } = require(`discord.js`);
 const fs = require('fs');
 const { errors } = require('./global');
+const { fetchReactionRole } = require('./API-Calls/handleReactionRole')
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] }); 
 client.commands = new Collection();
 
@@ -19,8 +20,6 @@ const commandFolders = fs.readdirSync("./src/commands");
     client.login(process.env.token)
 })();
 
-const reactions = require('./Schemas.js/reaction-role');
-
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
   if (!reaction.message.guildId) return;
@@ -29,14 +28,14 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
   let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
   if (!reaction.emoji.id) cID = reaction.emoji.name;
 
-  const data = await reactions.findOne({ Guild: reaction.message.guildId, Message: reaction.message.id, Emoji: cID });
+  const data = await fetchReactionRole(reaction.message.guildId, reaction.message.id, cID);
   if (!data) return;
 
   const guild = await client.guilds.cache.get(reaction.message.guildId);
   const member = await guild.members.cache.get(user.id);
 
   try {
-    await member.roles.add(data.Role);
+    await member.roles.add(data["role"]);
   } catch (err) {
     console.log(err);
     return await reaction.message.reply({ embeds: [errors.somethingWrong], ephemeral: true});
@@ -50,14 +49,14 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
   let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
   if (!reaction.emoji.id) cID = reaction.emoji.name;
 
-  const data = await reactions.findOne({ Guild: reaction.message.guildId, Message: reaction.message.id, Emoji: cID });
+  const data = await fetchReactionRole(reaction.message.guildId, reaction.message.id, cID);
   if (!data) return;
 
   const guild = await client.guilds.cache.get(reaction.message.guildId);
   const member = await guild.members.cache.get(user.id);
 
   try {
-    await member.roles.remove(data.Role);
+    await member.roles.remove(data["role"]);
   } catch (err) {
     console.log(err);
     return await reaction.message.reply({ embeds: [errors.somethingWrong], ephemeral: true});

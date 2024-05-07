@@ -3,9 +3,7 @@
     "axios": "^1.6.8",
     "canvas": "^2.11.2",
     "discord.js": "^14.14.1",
-    "dotenv": "^16.4.5",
-    "mongodb": "^6.6.0",
-    "mongoose": "^8.3.3"
+    "dotenv": "^16.4.5"
   },
   "name": "king_bot",
   "version": "1.0.0",

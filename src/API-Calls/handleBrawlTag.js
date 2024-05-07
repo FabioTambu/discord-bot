@@ -1,4 +1,4 @@
-const axios = require('axios')
+const axios = require('axios');
 
 async function checkTag(userID) { 
   try {
@@ -14,13 +14,11 @@ async function checkTag(userID) {
   }
 }
 
-function writeTag(key, value) {
-  axios.post(`http://tambuserver.ddns.net:3000/brawlTag/${key}`, {
-    value: value.toUpperCase(),
-    headers: {
-      Authorization: process.env.serverKey
-    }
-  }).catch(err => {console.error(err)});
+function postTag(key, value) {
+  axios.post(`http://tambuserver.ddns.net:3000/brawlTag/${key}`,
+    { value: value.toUpperCase() },
+    { headers: { Authorization: process.env.serverKey } }
+  ).catch(err => {console.error(err)});
 }
 
-module.exports = { checkTag, writeTag };
+module.exports = { checkTag, postTag };

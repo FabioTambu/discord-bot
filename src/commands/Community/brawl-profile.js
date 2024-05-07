@@ -3,7 +3,7 @@ const { errors, createErrorMessage } = require('../../global');
 const axios = require('axios');
 const { createCanvas, loadImage } = require('canvas');
 const { checkTag } = require('../../API-Calls/handleBrawlTag');
-const { findBrawlProfile, fetchAllBrawlers } = require('../../API-Calls/checkBrawlProfile')
+const { findBrawlProfile, fetchAllBrawlers } = require('../../API-Calls/fetchBrawlProfile')
 
 module.exports = {
     data: new SlashCommandBuilder()

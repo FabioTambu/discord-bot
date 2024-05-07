@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { errors, createSuccessMessage, createCustomMessage } = require('../../global');
-const { writeTag, checkTag } = require('../../API-Calls/handleBrawlTag');
-const { findBrawlProfile } = require('../../API-Calls/checkBrawlProfile');
+const { postTag, checkTag } = require('../../API-Calls/handleBrawlTag');
+const { findBrawlProfile } = require('../../API-Calls/fetchBrawlProfile');
 
 
 module.exports = {
@@ -22,7 +22,7 @@ module.exports = {
         if (tagInDatabase == 'err') return interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true });
 
         try {
-            writeTag(user.id, tag)
+            postTag(user.id, tag)
             await interaction.reply({embeds: [createSuccessMessage('**Tag Updated!**')]});
         } catch (err) {
             console.log(err);

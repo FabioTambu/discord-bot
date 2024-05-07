@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { PermissionFlagsBits } = require('discord.js');
-const reaction = require('../../Schemas.js/reaction-role');
 const { errors, createErrorMessage, createSuccessMessage } = require('../../global');
+const { fetchReactionRole, postReactionRole, deleteReactionRole } = require('../../API-Calls/handleReactionRole');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -28,37 +28,31 @@ module.exports = {
             interaction.reply({ embeds: [createErrorMessage('**Message not found!**')], ephemeral: true})
         });
 
-        const data = await reaction.findOne({ Guild: guild.id, Message: message.id, Emoji: emoji});
+        if(!guild.id || !message.id || !emoji) return await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true });
+        const data = await fetchReactionRole(guild.id, message.id, emoji);
         
         switch (sub) {
             case 'add':
                 if (data) return interaction.reply({ embeds: [createErrorMessage(`**Reaction role with ${emoji} emoji already exists for this message!**`)], ephemeral: true})
 
                 const role = options.getRole('role');
-                await reaction.create({
-                    Guild: guild.id,
-                    Message: message.id,
-                    Emoji: emoji,
-                    Role: role.id
-                })
+
+                postReactionRole(guild.id, message.id, emoji, role.id);
 
                 await message.react(emoji);
 
                 await interaction.reply({ embeds: [createSuccessMessage(`**I have added a reaction role to ${message.url} with the ${emoji} emoji and the role ${role}**`)]});
-                break;
+            break;
 
             case "remove":
                 if (!data) return interaction.reply({ embeds: [createErrorMessage(`**The react role with ${emoji} emoji does not exist for this message!**`)], ephemeral: true})
-                await reaction.deleteMany({
-                    Guild: guild.id,
-                    Message: message.id,
-                    Emoji: emoji
-                })
+
+                deleteReactionRole(guild.id, message.id, emoji);
 
                 await message.reactions.cache.get(emoji).remove();
 
                 await interaction.reply({ embeds: [createSuccessMessage(`**I have removed the reaction role from ${message.url} with the ${emoji} emoji**`)]});
-                break;
+            break;
         }
     }
 }
