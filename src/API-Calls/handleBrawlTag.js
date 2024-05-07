@@ -2,7 +2,7 @@ const axios = require('axios')
 
 async function checkTag(userID) { 
   try {
-    const response = await axios.get('http://192.168.1.51:3000/brawlTag', {
+    const response = await axios.get('http://tambuserver.ddns.net:3000/brawlTag', {
         headers: {
           Authorization: process.env.serverKey
         }
@@ -15,7 +15,7 @@ async function checkTag(userID) {
 }
 
 function writeTag(key, value) {
-  axios.post(`http://192.168.1.51:3000/brawlTag/${key}`, {
+  axios.post(`http://tambuserver.ddns.net:3000/brawlTag/${key}`, {
     value: value.toUpperCase(),
     headers: {
       Authorization: process.env.serverKey
