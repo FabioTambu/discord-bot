@@ -2,7 +2,7 @@ const axios = require('axios');
 
 async function fetchReactionRole(guild, message, emoji) {
     try {
-        const response = await axios.get(`http://tambuserver.ddns.net:3000/reactionRole`, {
+        const response = await axios.get(`https://discord.tamburini.dev/reactionRole`, {
             headers: {
               Authorization: process.env.serverKey
             }
@@ -15,14 +15,14 @@ async function fetchReactionRole(guild, message, emoji) {
 }
 
 async function postReactionRole(guild, message, emoji, role) {
-    axios.post(`http://tambuserver.ddns.net:3000/reactionRole`,
+    axios.post(`https://discord.tamburini.dev/reactionRole`,
         { value: { "guild": guild, "message": message, "emoji": emoji, "role": role } }, 
         { headers: { Authorization: process.env.serverKey } }
     ).catch(err => {console.error(err)});
 }
 
 async function deleteReactionRole(guild, message, emoji) {
-    axios.delete(`http://tambuserver.ddns.net:3000/reactionRole?guild=${guild}&message=${message}&emoji=${emoji}`,
+    axios.delete(`https://discord.tamburini.dev/reactionRole?guild=${guild}&message=${message}&emoji=${emoji}`,
         { headers: { Authorization: process.env.serverKey } }
     ).catch(err => {console.error(err)});
 }

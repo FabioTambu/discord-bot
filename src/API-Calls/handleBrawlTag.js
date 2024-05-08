@@ -2,7 +2,7 @@ const axios = require('axios');
 
 async function checkTag(userID) { 
   try {
-    const response = await axios.get('http://tambuserver.ddns.net:3000/brawlTag', {
+    const response = await axios.get('https://discord.tamburini.dev/brawlTag', {
         headers: {
           Authorization: process.env.serverKey
         }
@@ -15,7 +15,7 @@ async function checkTag(userID) {
 }
 
 function postTag(key, value) {
-  axios.post(`http://tambuserver.ddns.net:3000/brawlTag/${key}`,
+  axios.post(`https://discord.tamburini.dev/brawlTag/${key}`,
     { value: value.toUpperCase() },
     { headers: { Authorization: process.env.serverKey } }
   ).catch(err => {console.error(err)});
