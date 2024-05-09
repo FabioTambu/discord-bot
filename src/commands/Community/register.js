@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { errors, createSuccessMessage, createCustomMessage } = require('../../global');
 const { postTag, checkTag } = require('../../API-Calls/handleBrawlTag');
-const { findBrawlProfile } = require('../../API-Calls/fetchBrawlProfile');
+const { findBrawlProfile } = require('../../API-Calls/fetchBrawlInfo');
 
 
 module.exports = {

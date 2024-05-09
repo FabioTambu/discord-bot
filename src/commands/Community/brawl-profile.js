@@ -3,7 +3,7 @@ const { errors, createErrorMessage } = require('../../global');
 const axios = require('axios');
 const { createCanvas, loadImage } = require('canvas');
 const { checkTag } = require('../../API-Calls/handleBrawlTag');
-const { findBrawlProfile, fetchAllBrawlers } = require('../../API-Calls/fetchBrawlProfile')
+const { findBrawlProfile, fetchAllBrawlers, handleProfileIcon } = require('../../API-Calls/fetchBrawlInfo')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -60,10 +60,10 @@ module.exports = {
             // Background
             const background = await loadImage('assets/background.jpg');
             ctx.drawImage(background, 0, 0, totalWidth + imageBorder * 2, totalHeight);
-            // Player Icon Background 
-            const black_square = await loadImage('assets/black-square.png');
-            ctx.drawImage(black_square, 30 + imageBorder, 25, 150, 150);
-            // Player Name
+            // Add Profile Icon
+            const profileIcon = await handleProfileIcon(28000254)
+            ctx.drawImage(profileIcon, 45 + imageBorder, 25, 150, 150)
+            // Player Names
             const playerNameX = 400 - ctx.measureText(playerData.name).width / 2 + imageBorder;
             ctx.fillText(playerData.name, playerNameX, 75);
 
