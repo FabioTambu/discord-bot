@@ -64,7 +64,8 @@ module.exports = {
             ctx.drawImage(profileIcon, 45 + imageBorder, 25, 150, 150)
             // Player Tag
             ctx.font = 'bold 20px Sans';
-            ctx.fillText(playerData.tag, 70, 185);
+            const playerTagX = 118 - ctx.measureText(playerData.tag.toUpperCase()).width / 2 + imageBorder;
+            ctx.fillText(playerData.tag.toUpperCase(), playerTagX, 185);
             // Player Names
             ctx.font = 'bold 35px Sans';
             const playerNameX = 410 - ctx.measureText(playerData.name).width / 2 + imageBorder;
