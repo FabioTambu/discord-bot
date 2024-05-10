@@ -61,10 +61,14 @@ module.exports = {
             const background = await loadImage('assets/background.jpg');
             ctx.drawImage(background, 0, 0, totalWidth + imageBorder * 2, totalHeight);
             // Add Profile Icon
-            const profileIcon = await handleProfileIcon(28000254)
+            const profileIcon = await handleProfileIcon(playerData.icon.id)
             ctx.drawImage(profileIcon, 45 + imageBorder, 25, 150, 150)
+            // Player Tag
+            ctx.font = 'bold 20px Sans';
+            ctx.fillText(playerData.tag, 70, 185);
             // Player Names
-            const playerNameX = 400 - ctx.measureText(playerData.name).width / 2 + imageBorder;
+            ctx.font = 'bold 35px Sans';
+            const playerNameX = 410 - ctx.measureText(playerData.name).width / 2 + imageBorder;
             ctx.fillText(playerData.name, playerNameX, 75);
 
             // Save Headers Values
