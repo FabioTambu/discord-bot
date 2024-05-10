@@ -55,7 +55,6 @@ module.exports = {
             const totalHeight = 1080;
             const canvas = createCanvas(totalWidth + imageBorder * 2, totalHeight);
             const ctx = canvas.getContext('2d');
-            ctx.font = 'bold 35px Sans';
             ctx.fillStyle = 'white';
             // Background
             const background = await loadImage('assets/background.jpg');
