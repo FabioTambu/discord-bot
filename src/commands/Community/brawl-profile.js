@@ -27,7 +27,7 @@ module.exports = {
             if (!user && !tag) return await interaction.editReply({ embeds: [createErrorMessage('**You must enter at least one option!**')], ephemeral: true})
             if (user && !tag){
                 tag = await checkTag(user.id);
-                if (!tag) return await interaction.editReply({ embeds: [errors.userNotRegistered], ephemeral: true });
+                if (tag == '404 err') return await interaction.editReply({ embeds: [errors.userNotRegistered], ephemeral: true });
                 if (tag == 'err') return await interaction.editReply({ embeds: [errors.somethingWrong], ephemeral: true });
             }
 

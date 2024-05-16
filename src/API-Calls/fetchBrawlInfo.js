@@ -11,7 +11,7 @@ async function findBrawlProfile(tag) {
         })
         return response;
     } catch (err) {
-        if (err.response.status == 404) return '404 err'
+        if (err.response.status == 404) return '404 err';
         console.log(err);
         return 'err';
     }

@@ -14,11 +14,14 @@ module.exports = {
         const user = options.getUser('user');
 
         try {
-            const tag = checkTag(user.id);
-            if (tag)
-                await interaction.reply({embeds: [createSuccessMessage(`This user is **registered**\nThe tag is: **${tag}**`)]}); 
-            else
+            const tag = await checkTag(user.id);
+            console.log(tag)
+            if (tag == '404 err')
                 await interaction.reply({embeds: [errors.userNotRegistered], ephemeral: true});
+            else if (tag == 'err')
+                await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true})
+            else
+                await interaction.reply({embeds: [createSuccessMessage(`This user is **registered**\nThe tag is: **${tag}**`)]}); 
             
         } catch (err) {
             console.log(err);

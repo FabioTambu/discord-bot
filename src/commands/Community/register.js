@@ -26,7 +26,7 @@ module.exports = {
             await interaction.reply({embeds: [createSuccessMessage('**Tag Updated!**')]});
         } catch (err) {
             console.log(err);
-            return await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true})
+            return await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true })
         }
     }
 }

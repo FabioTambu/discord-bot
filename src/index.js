@@ -11,20 +11,6 @@ const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js"));
 const commandFolders = fs.readdirSync("./src/commands");
 
-const process = require("node:process");
-
-process.on('unhandledRejection', async (reason, promise) => {
-  console.log('Unhandled Rejection aat:', promise, 'reason:', reason);
-})
-
-process.on('uncaughtException', (err) => {
-  console.log('Uncaught Exception:', err);
-})
-
-process.on('uncaughtExceptionMonitor', (err) => {
-  console.log('Uncaught Exception Monitor:', err);
-})
-
 (async () => {
     for (file of functions) {
         require(`./functions/${file}`)(client);
