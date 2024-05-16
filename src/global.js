@@ -23,6 +23,7 @@ module.exports = {
         somethingWrong: createErrorMessage('**Something went wrong**\nPlease try again'),
         sameID: createErrorMessage('**You can\'t do this to yourself!** :weary: :weary:'),
         userNotRegistered: createErrorMessage('This user is **not registered**\nTo register use the **/register** command and enter your **brawl stars tag!**'),
-        brawlTagNotExist: createErrorMessage('**This brawl stars tag does not exist!**')
+        brawlTagNotExist: createErrorMessage('**This brawl stars tag does not exist!**'),
+        messageNotFound: createErrorMessage('**Message not found!**')
     }
 }

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@iamtraction/google-translate": "github:iamtraction/google-translate",
     "axios": "^1.6.8",
     "canvas": "^2.11.2",
     "discord.js": "^14.14.1",

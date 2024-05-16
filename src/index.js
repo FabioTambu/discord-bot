@@ -62,3 +62,20 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
     return await reaction.message.reply({ embeds: [errors.somethingWrong], ephemeral: true});
   }
 })
+/*
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (interaction.isAutocomplete()) {
+    const command = client.commands.get(interaction.commandName);
+
+    if (!command) {
+        console.error("Command not found!");
+        return;
+    }
+
+    try {
+        await command.autocomplete(interaction);
+    } catch (error) {
+        console.error("Failed to complete the autocomplete request:", error);
+    }  
+  }
+})*/

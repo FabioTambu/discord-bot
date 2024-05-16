@@ -25,7 +25,7 @@ module.exports = {
 
         if (!interaction.member.permissions.has(PermissionFlagsBits.ManageRoles && PermissionFlagsBits.ManageMessages)) return interaction.reply({ embeds: [errors.permission], ephemeral: true})
         const message = await channel.messages.fetch(messageId).catch(() => {
-            interaction.reply({ embeds: [createErrorMessage('**Message not found!**')], ephemeral: true})
+            interaction.reply({ embeds: [errors.messageNotFound], ephemeral: true})
         });
 
         if(!guild.id || !message.id || !emoji) return await interaction.reply({ embeds: [errors.somethingWrong], ephemeral: true });
