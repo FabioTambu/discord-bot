@@ -45,42 +45,6 @@ module.exports = {
         .addBooleanOption(option => option.setName('show').setDescription('Show the text you translated to everyone on the channel'))
     ),
 
-    /*async autocomplete(interaction) {
-		const focusedValue = interaction.options.getFocused();
-		const choices = [
-            {name: 'English', value: 'en'},
-            {name: '中文 (Chinese)', value: 'zh'},
-            {name: 'Español (Spanish)', value: 'es'},
-            {name: 'हिन्दी (Hindi)', value: 'hi'},
-            {name: 'Français (French)', value: 'fr'},
-            {name: 'العربية (Arabic)', value: 'ar'},
-            {name: 'Português (Portuguese)', value: 'pt'},
-            {name: 'Bengali', value: 'bn'},
-            {name: 'Русский (Russian)', value: 'ru'},
-            {name: 'Deutsch (German)', value: 'de'},
-            {name: 'ਪੰਜਾਬੀ (Punjabi)', value: 'pa'},
-            {name: '日本語 (Japanese)', value: 'ja'},
-            {name: 'Italiano (Italian)', value: 'it'},
-            {name: '한국어 (Korean)', value: 'ko'},
-            {name: 'Polski (Polish)', value: 'pl'},
-            {name: 'Türkçe (Turkish)', value: 'tr'},
-            {name: 'Español (Spanish)', value: 'es'},
-            {name: 'فارسی (Persian)', value: 'fa'},
-            {name: 'Українська (Ukrainian)', value: 'uk'},
-            {name: 'اردو (Urdu)', value: 'ur'},
-            {name: 'Azərbaycan dili (Azerbaijani)', value: 'az'},
-            {name: 'Filipino (Filipino)', value: 'tl'},
-            {name: 'Nederlands (Dutch)', value: 'nl'},
-            {name: 'Indonesia (Indonesian)', value: 'id'},
-            {name: 'اردو (Urdu)', value: 'ur'},
-            {name: 'اردو (Urdus)', value: 'urs'}
-        ];
-		const filtered = choices.filter(choice => choice.name.startsWith(focusedValue));
-		await interaction.respond(
-			filtered.map(choice => ({ name: choice.name, value: choice.value })),
-		);
-	},*/
-
     async execute (interaction) {
         const { options, channel } = interaction;
         const sub = options.getSubcommand();

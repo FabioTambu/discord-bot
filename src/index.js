@@ -1,8 +1,17 @@
 const { Client, GatewayIntentBits, Collection, Events } = require(`discord.js`);
 const fs = require('fs');
 const { errors } = require('./global');
+const { fetchWelcomeMessage, deleteWelcomeMessage } = require('../src/API-Calls/handleWelcomeMessage');
 const { fetchReactionRole } = require('./API-Calls/handleReactionRole')
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions] }); 
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildMembers
+  ]
+}); 
 client.commands = new Collection();
 
 require('dotenv').config();
@@ -62,20 +71,16 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
     return await reaction.message.reply({ embeds: [errors.somethingWrong], ephemeral: true});
   }
 })
-/*
-client.on(Events.InteractionCreate, async (interaction) => {
-  if (interaction.isAutocomplete()) {
-    const command = client.commands.get(interaction.commandName);
 
-    if (!command) {
-        console.error("Command not found!");
-        return;
-    }
+client.on(Events.GuildMemberAdd, async (member) => {
+  const response = await fetchWelcomeMessage(member.guild.id);
 
-    try {
-        await command.autocomplete(interaction);
-    } catch (error) {
-        console.error("Failed to complete the autocomplete request:", error);
-    }  
+  if (response) {
+    const message = response.message.replace(/@user/g, `<@${member.user.id}>`);
+    const welcomeChannel = member.guild.channels.cache.find(channel => channel.id === response.channel);
+    if (welcomeChannel)
+      welcomeChannel.send(message)
+    else
+      deleteWelcomeMessage(member.guild.id)
   }
-})*/
+});
